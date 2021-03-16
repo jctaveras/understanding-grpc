@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package calculator;
+option go_package = "./calculator/calcpb";
+
+message Addition {
+  repeated int32 params = 1;
+}
+
+message AddRequest {
+  Addition addition = 1;
+}
+
+message AddResponse {
+  int32 result = 1;
+}
+
+message PNDRequest {
+  int32 number = 1;
+}
+
+message PNDResponse {
+  int32 number = 1;
+}
+
+message ComputeAvgResponse {
+  double result = 1;
+}
+
+message ComputeAvgRequest {
+  int32 number = 1;
+}
+
+message FindMaxRequest {
+  int32 number = 1;
+}
+
+message FindMaxResponse {
+  int32 maxNumber = 1;
+}
+
+message SqrtRequest {
+  double number = 1;
+}
+
+message SqrtResponse {
+  double result = 1;
+}
+
+service Calculator {
+  // Uniray RPC
+  rpc Add (AddRequest) returns (AddResponse);
+
+  // Streaming Server RPC
+  rpc PrimaryNumberDecomposition (PNDRequest) returns (stream PNDResponse);
+
+  // Streaming Client RPC
+  rpc ComputeAvg (stream ComputeAvgRequest) returns (ComputeAvgResponse);
+
+  // Bi-Direcctional Streaming RPC
+  rpc FindMax (stream FindMaxRequest) returns (stream FindMaxResponse);
+
+  // Unary RPC
+  // Error Handling - this RPC will throw an Error if a 
+  // negative number is sent
+  rpc Sqrt (SqrtRequest) returns (SqrtResponse);
+}
